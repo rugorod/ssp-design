@@ -26,11 +26,11 @@
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
     <!--[if lte IE 8]>
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" />
-    <![endif]-->
+	<![endif]-->
     <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
 
 
-    <title>Мебельщик</title>
+    <title>Самоделкин +</title>
 
   </head>
 
@@ -50,7 +50,7 @@
 	    </span>
 	  </button>
 	  <a class="brand cool-brand" href="./">
-	    Мебельщик
+	    Самоделкин +
 	  </a>
 	  <div class="nav-collapse collapse">
 	    <ul class="nav">
@@ -94,8 +94,9 @@
       <div class="row">
 
 	<div class="span3 bs-docs-sidebar">
-	  <ul class="nav nav-list bs-docs-sidenav affix"  id="categories">
-	  </ul>
+	  <div class="affix">
+	    <ul class="nav nav-list bs-docs-sidenav"  id="categories">
+	    </ul>
 
 	    <div class="cart-info btn-group">
 	      <a class="btn btn-success" href="#/cart">
@@ -112,16 +113,16 @@
 	      </a>
 	    </div>
 
-	  <ul class="nav nav-list bs-docs-sidenav affix admin-only" >
-	    <li><a>Управление</a></li>
-	    <li><a href="#/additem"><i class="icon-pencil"></i>Добавить товар</a></li>
-	    <li><a href="#/addcat"><i class="icon-book"></i>Добавить раздел</a></li>
-	    <li><a href="#/requests"><span class="badge badge-success" id="requestNumber">0</span> Заказы</a></li>
-	    <li><a href="#/logout"><i class="icon-lock"></i>Выйти</a></li>
-	  </ul>
-
+	    <ul class="nav nav-list bs-docs-sidenav admin-only" >
+	      <li><a>Управление</a></li>
+	      <li><a href="#/additem"><i class="icon-pencil"></i>Добавить товар</a></li>
+	      <li><a href="#/addcat"><i class="icon-book"></i>Добавить раздел</a></li>
+	      <li><a href="#/requests"><span class="badge badge-success" id="requestNumber">0</span> Заказы</a></li>
+	      <li><a href="#/logout"><i class="icon-lock"></i>Выйти</a></li>
+	    </ul>
+	  </div>
 	</div>
-	<div class="span9" data-spy="affix" data-offset-top="200">
+	<div class="span9">
 	  <section>
 	    <div id="premain">
 	    </div>
@@ -135,19 +136,19 @@
 
       <!-- Modals  -->
       <div class="modal hide fade" id="myModal">
-      <form action="#/login" method="post">
-	<div class="modal-header">
-	  <button type="button" class="close" data-dismiss="modal">×</button>
-	  <h3>Авторизация</h3>
-	</div>
-	<div class="modal-body">
-	  <input type="password" name="pass" class="input" placeholder="Введите здесь пароль">
-	</div>
-	<div class="modal-footer">
-	  <a href="#" class="btn" data-dismiss="modal">Закрыть</a>
-	  <button type="submit" class="btn btn-primary"> Войти</button>
-	</div>
-      </form>
-    </div>
+	<form action="#/login" method="post">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal">×</button>
+	    <h3>Авторизация</h3>
+	  </div>
+	  <div class="modal-body">
+	    <input type="password" name="pass" class="input" placeholder="Введите здесь пароль">
+	  </div>
+	  <div class="modal-footer">
+	    <a href="#" class="btn" data-dismiss="modal">Закрыть</a>
+	    <button type="submit" class="btn btn-primary"> Войти</button>
+	  </div>
+	</form>
+      </div>
   </body>
 </html>
