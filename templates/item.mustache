@@ -4,14 +4,13 @@
       <input type="hidden" name="id" value="{{ _id }}" />
       <input type="hidden" name="cost" value="{{ cost }}" />
       <div  class="image-galery" >
-	<a href="/json/image?id={{ _id }}" rel="lightbox"><img src="/json/image?id={{ _id }}"></img></a>
-      </div>
-      attachs:
       {{#each_hash _attachments}}
-      <img src="/json/image?id={{../_id}}&image={{_key}}"></img>
-      "/json/image?id={{../_id}}&image={{_key}}"
-      {{/each_hash}}
 
+      <a rel="lightbox" href="/json/image?id={{../_id}}&image={{_key}}">
+      <img alt="" src="/json/image?id={{../_id}}&image={{_key}}"></img>
+      </a>
+      {{/each_hash}}
+      </div>
       <div class="caption">
 	<div class="story">
 	  <h3>
