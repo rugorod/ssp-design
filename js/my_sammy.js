@@ -240,6 +240,19 @@ Handlebars.registerHelper('attachNames', function(items) {
             });
 	});
 
+	this.get("#/image/delete/:id/:image", function() {
+	    var context = this;
+            var image = this.params['image'];
+            var id = this.params['id'];
+	    $.post("/json/delimage", {"id": id, 'image': image}, function(response) {
+                if (response == "ok") {
+                    $("#image_"+image).hide();
+                }
+                //history.back();
+                //context.next(JSON.parse(response));
+            });
+	});
+
 	this.get("#/deletereq/:id", function() {
 	    var context = this;
             var id = this.params['id'];
