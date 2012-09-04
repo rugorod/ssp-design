@@ -2,17 +2,49 @@ html {
     overflow-y: scroll;
 }
 
-#map { height: 400px;}
-
-.brand:hover {
-
-  color: #f4200;
-  transition: color 2s ease-in;
-  -moz-transition: color 2s ease-in; /* Firefox 4 */
-  -webkit-transition: color 2s ease-in; /* Safari and Chrome */
-  -o-transition: color 2s ease-in; /* Opera */
+body {
+    background: #222 url(/img/bg.jpg);
+}
+/* typo */
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
+    color: #444;
 }
 
+.cream {
+    color: #f2f2f2;
+    text-shadow: 0.1em 0.1em 0.1em black;
+}
+
+a:hover {
+    color: white;
+}
+
+#map {
+    height: 400px;
+}
+
+body > .navbar-fixed-top .brand {
+    color: white;
+
+}
+
+.navbar-inner {
+    background-color:#593220;
+    background-image:-o-linear-gradient(-90deg,rgba(0,0,0,0),rgba(0,0,0,0.58));
+    background-image:-moz-linear-gradient(-90deg,rgba(0,0,0,0),rgba(0,0,0,0.58));
+    background-image:-webkit-gradient(linear,50% 0%,50% 100%,from(rgba(0,0,0,0)),to(rgba(0,0,0,0.58)));
+    background-image:-webkit-linear-gradient(-90deg,rgba(0,0,0,0),rgba(0,0,0,0.58));background-repeat:repeat;
+}
+/*thumbnail */
+.thumbnail {
+    background: #fff;
+}
+/* style mini */
+.shadow {
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.4);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.4);
+    box-shadow: 0 1px 2px rgba(0,0,0,.4);
+}
 /* grid */
 .image-galery {
     overflow: hidden;
@@ -399,7 +431,7 @@ body > .navbar-fixed-top .brand {
   margin-left: 20px;
   float: right;
   font-weight: bold;
-  color: #000;
+  color: #fff;
   text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
   -webkit-transition: all .2s linear;
      -moz-transition: all .2s linear;
