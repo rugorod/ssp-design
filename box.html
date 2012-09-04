@@ -38,6 +38,7 @@
     высота: <input id="in1" /><br>
     длина: <input id="in2" /> <br>
     дверей: <input id="in3" /> <br>
+    ящиков: <input id="in4" /> <br>
     <button onClick="func();" >htht</button>
 
     <div id="shkaf" class="well">
@@ -57,13 +58,19 @@
       function func() {
       var in1 = $('#in1').val();
       var in2 = $('#in2').val();
-      var in3 = $('#in3').val();
+      var doors = $('#in3').val();
+      var in4 = $('#in4').val();
       var aspect = in1/in2;
       var defH = 400;
       var defW = 400/aspect;
       $('#shkaf').height(defH);
       $('#shkaf').width(defW);
-      $('#shkaf').append("<div id='door'>htahst</div>");
+      $('#shkaf').empty();
+      for (i = 0; i < doors; ++i) {
+                      $('#shkaf').append("<div id='door"  + i + "'" + " style='display:block;' class='door well'>x</div>");
+      }
+      $('.door').width(defW/doors);
+
 
       }
     </script>

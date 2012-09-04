@@ -4,16 +4,16 @@
 
 	<script>
 
-		var map = L.map('map').setView([55.17533, 61.3828], 16);
+		var map = L.map('map').setView([55.17533, 61.3828], 17);
 
-		L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+		L.tileLayer('http://{s}.tile.openstreetmap.org//{z}/{x}/{y}.png', {
 			maxZoom: 18,
 			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
 		}).addTo(map);
 
 
-//		L.marker([51.5, -0.09]).addTo(map)
-//			.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+		L.marker([55.17498, 61.38333]).addTo(map)
+			.bindPopup("<b>Мебельщик</b><br />Мы здесь").openPopup();
 
 //		L.circle([51.508, -0.11], 500, {
 //			color: 'red',

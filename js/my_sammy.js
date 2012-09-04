@@ -1,7 +1,7 @@
 (function($) {
     var app = $.sammy(function() {
 
-        this.use(Sammy.Mustache);
+        this.use(Sammy.Handlebars);
         this.use(Sammy.Template);
         this.use(Sammy.JSON);
         this.use(Sammy.Storage);
@@ -10,11 +10,69 @@
         var store = new Sammy.Store({name: 'mystore', element: '1', type: 'local'});
         var login = new Sammy.Store({name: 'login', element: '2', type: 'local'});
         var cache = new Sammy.Store({name: 'cache', element: '3', type: 'memory'});
-
+        this.use('Handlebars', 'mustache');
         this.disable_push_state = true;
         this.clearTemplateCache();
         //this.setLocationProxy(new Sammy.PushLocationProxy(this));
         //this.setLocationProxy(new Sammy.DataLocationProxy(this, 'location', 'rel'));
+
+
+
+
+
+// based on the `#each` helper, requires jQuery (for jQuery.extend)
+Handlebars.registerHelper('each_hash', function(context, options) {
+    var fn = options.fn, inverse = options.inverse;
+    var ret = "";
+
+    if(typeof context === "object") {
+        for(var key in context) {
+            if(context.hasOwnProperty(key)) {
+                // clone the context so it's not
+                // modified by the template-engine when
+                // setting "_key"
+                var ctx = jQuery.extend(
+                    {"_key":key},
+                    context[key]);
+
+                ret = ret + fn(ctx);
+            }
+        }
+    } else {
+        ret = inverse(this);
+    }
+    return ret;
+});
+
+
+Handlebars.registerHelper('eachname', function(context, options) {
+  var ret = [];
+
+  if (context) {
+      ret ="another"
+      for(i in context) {
+          alert(i);
+          ret = ret.push (i);
+      }
+  }
+
+  return ret;
+});
+
+
+Handlebars.registerHelper('attachNames', function(items) {
+    var res = [];
+    if (items) {
+        for (i in items) {
+            alert(i);
+            res = res.push(i);
+        }
+        return res;
+    } else {
+        return [];
+    }
+});
+
 
         function newAlert() {
             var oldTitle = document.title;
