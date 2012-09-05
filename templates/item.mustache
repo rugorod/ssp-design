@@ -3,10 +3,10 @@
     <form action="#/cart" method="post">
       <input type="hidden" name="id" value="{{ _id }}" />
       <input type="hidden" name="cost" value="{{ cost }}" />
-      <div  class="image-galery" >
+      <div  class="image-galery hidden-img" >
       {{#each_hash _attachments}}
 
-      <a rel="lightbox" href="/json/image?id={{../_id}}&image={{_key}}">
+      <a rel="lightbox[item{{../_id}}]" href="/json/image?id={{../_id}}&image={{_key}}">
       <img alt="" src="/json/image?id={{../_id}}&image={{_key}}"></img>
       </a>
       {{/each_hash}}

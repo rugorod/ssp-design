@@ -7,6 +7,10 @@ body {
     padding-top: 40px;
     background: #222 url(/img/bg.jpg);
 }
+/* item img */
+.hidden-img a:nth-child(n+2) {
+    display: none;
+}
 /* breadcrumb */
 .breadcrumb li a {
     color: #bf5f00;
