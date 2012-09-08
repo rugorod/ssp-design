@@ -94,6 +94,12 @@ Handlebars.registerHelper('attachNames', function(items) {
         function checkLoggedIn() {
             // /session returns a JSON representation of the logged in user
             // or an empty object
+
+	    $.post('/json/checklogin', function(data) {
+		if (data == "fail") {
+		    login.clear("user");
+                }
+	    });
             if (login.get('user')) {
                 $('#menu_login').hide();
                 $('#menu_user').show();
@@ -104,6 +110,7 @@ Handlebars.registerHelper('attachNames', function(items) {
                 $('#menu_user').hide();
                 $('.admin-only').hide();
             }
+
         };
 
 	this.get("#/category/:category", function() {
