@@ -113,6 +113,15 @@ Handlebars.registerHelper('attachNames', function(items) {
 
         };
 
+	this.get("#/delcategory/:cat", function() {
+	    var context = this;
+	    $.post("/json/delcategory", this.params, function(response) {
+                context.trigger('update-categories');
+                //             context.next(JSON.parse(response));
+            });
+	    this.redirect("#/");
+        });
+
 	this.get("#/category/:category", function() {
 	    var context = this;
 	    var category = this.params['category'];
