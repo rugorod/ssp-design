@@ -396,7 +396,7 @@ Handlebars.registerHelper('attachNames', function(items) {
                     if (items == null)
                     {
                         this.render('templates/main.mustache', {"contentId":page})
-                            .appendTo("#main");
+                            .replace("#main");
                     } else {
 		        this.render('templates/main.mustache',items)
 		            .replace('#main')
