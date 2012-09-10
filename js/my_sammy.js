@@ -387,69 +387,24 @@ Handlebars.registerHelper('attachNames', function(items) {
 //////////////////////////////////
 // STATIC
 /////////////////////////////////
-	this.get("#/discount", function() {
+	this.get("#/page/:page", function() {
+            var page = this.params['page'];
             $('#premain').empty();
-	    $('#menu_discount').addClass('active');
-            this.render('templates/main.mustache', {"contentId":"discount"})
-                .replace("#main");
-	    this.load("/json/content?id=discount", {"json":true})
-		.render('templates/main.mustache')
-		.replace('#main')
-		.then(function () {
-                    checkLoggedIn();
-	        });
-	});
-
-	this.get("#/deliver", function() {
-            $('#premain').empty();
-	    $('#menu_deliver').addClass('active');
-            this.render('templates/main.mustache', {"contentId":"deliver"})
-                .replace("#main");
-	    this.load("/json/content?id=deliver", {"json":true})
-		.render('templates/main.mustache')
-		.replace('#main')
-		.then(function () {
-                    checkLoggedIn();
-	        });
-	});
-
-	this.get("#/contacts", function() {
-            $('#premain').empty();
-	    $('#menu_contacts').addClass('active');
-            this.render('templates/main.mustache', {"contentId":"contacts"})
-                .replace("#main");
-	    this.load("/json/content?id=contacts", {"json":true})
-		.render('templates/main.mustache')
-		.replace('#main')
-		.then(function () {
-                    checkLoggedIn();
-	        });
-	});
-
-	this.get("#/address", function() {
-            $('#premain').empty();
-	    $('#menu_address').addClass('active');
-            this.render('templates/main.mustache', {"contentId":"address"})
-                .replace("#main");
-	    this.load("/json/content?id=address", {"json":true})
-		.render('templates/main.mustache')
-		.replace('#main')
-		.then(function () {
-                    checkLoggedIn();
-	        });
-        });
-
-	this.get("#/about", function() {
-            $('#premain').empty();
-	    $('#menu_about').addClass('active');
-            this.render('templates/main.mustache', {"contentId":"about"})
-                .replace("#main");
-	    this.load("/json/content?id=about", {"json":true})
-		.render('templates/main.mustache')
-		.replace('#main')
-		.then(function () {
-                    checkLoggedIn();
-	        });
+	    $('#menu_' + page).addClass('active');
+	    this.load("/json/content?id=" + page, {"json":true})
+                .then(function(items) {
+                    if (items == null)
+                    {
+                        this.render('templates/main.mustache', {"contentId":page})
+                            .appendTo("#main");
+                    } else {
+		        this.render('templates/main.mustache',items)
+		            .replace('#main')
+		            .then(function () {
+                                checkLoggedIn();
+	                    });
+                    }
+                });
         });
 
         this.get("#/additem", function() {
