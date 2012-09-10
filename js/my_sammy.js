@@ -582,6 +582,7 @@ Handlebars.registerHelper('attachNames', function(items) {
 
             var context = this;
             this.id = "main";
+            this.contentId = "main";
             this.render('templates/main.mustache', {"contentId":"main"})
                 .replace("#main");
 	    this.load("/json/content?id=main", {"json":true,})
