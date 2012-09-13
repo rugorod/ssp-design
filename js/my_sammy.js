@@ -631,7 +631,7 @@ Handlebars.registerHelper('attachNames', function(items) {
                     }
                     context.oldCount = count;
                     $("#requestNumber").text(count);
-                    setTimeout(function() {context.trigger('update-requests');}, 5000);
+                    setTimeout(function() {context.trigger('update-requests');}, 30000);
                 });
         });
 
