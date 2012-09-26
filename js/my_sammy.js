@@ -225,6 +225,7 @@ Handlebars.registerHelper('attachNames', function(items) {
 	    var id = this.params['id'];
             var context = this;
             $('#premain').empty();
+            this.contentId = id;
             this.render('templates/edit_content.mustache',{'contentId':id})
 		.replace('#main');
             this.load("/json/rawcontent?id=" + id, {"json":true})
@@ -387,69 +388,24 @@ Handlebars.registerHelper('attachNames', function(items) {
 //////////////////////////////////
 // STATIC
 /////////////////////////////////
-	this.get("#/discount", function() {
+	this.get("#/page/:page", function() {
+            var page = this.params['page'];
             $('#premain').empty();
-	    $('#menu_discount').addClass('active');
-            this.render('templates/main.mustache', {"contentId":"discount"})
-                .replace("#main");
-	    this.load("/json/content?id=discount", {"json":true})
-		.render('templates/main.mustache')
-		.replace('#main')
-		.then(function () {
-                    checkLoggedIn();
-	        });
-	});
-
-	this.get("#/deliver", function() {
-            $('#premain').empty();
-	    $('#menu_deliver').addClass('active');
-            this.render('templates/main.mustache', {"contentId":"deliver"})
-                .replace("#main");
-	    this.load("/json/content?id=deliver", {"json":true})
-		.render('templates/main.mustache')
-		.replace('#main')
-		.then(function () {
-                    checkLoggedIn();
-	        });
-	});
-
-	this.get("#/contacts", function() {
-            $('#premain').empty();
-	    $('#menu_contacts').addClass('active');
-            this.render('templates/main.mustache', {"contentId":"contacts"})
-                .replace("#main");
-	    this.load("/json/content?id=contacts", {"json":true})
-		.render('templates/main.mustache')
-		.replace('#main')
-		.then(function () {
-                    checkLoggedIn();
-	        });
-	});
-
-	this.get("#/address", function() {
-            $('#premain').empty();
-	    $('#menu_address').addClass('active');
-            this.render('templates/main.mustache', {"contentId":"address"})
-                .replace("#main");
-	    this.load("/json/content?id=address", {"json":true})
-		.render('templates/main.mustache')
-		.replace('#main')
-		.then(function () {
-                    checkLoggedIn();
-	        });
-        });
-
-	this.get("#/about", function() {
-            $('#premain').empty();
-	    $('#menu_about').addClass('active');
-            this.render('templates/main.mustache', {"contentId":"about"})
-                .replace("#main");
-	    this.load("/json/content?id=about", {"json":true})
-		.render('templates/main.mustache')
-		.replace('#main')
-		.then(function () {
-                    checkLoggedIn();
-	        });
+	    $('#menu_' + page).addClass('active');
+	    this.load("/json/content?id=" + page, {"json":true})
+                .then(function(items) {
+                    if (items == null)
+                    {
+                        this.render('templates/main.mustache', {"contentId":page})
+                            .replace("#main");
+                    } else {
+		        this.render('templates/main.mustache',items)
+		            .replace('#main')
+		            .then(function () {
+                                checkLoggedIn();
+	                    });
+                    }
+                });
         });
 
         this.get("#/additem", function() {
@@ -627,6 +583,7 @@ Handlebars.registerHelper('attachNames', function(items) {
 
             var context = this;
             this.id = "main";
+            this.contentId = "main";
             this.render('templates/main.mustache', {"contentId":"main"})
                 .replace("#main");
 	    this.load("/json/content?id=main", {"json":true,})
@@ -674,7 +631,7 @@ Handlebars.registerHelper('attachNames', function(items) {
                     }
                     context.oldCount = count;
                     $("#requestNumber").text(count);
-                    setTimeout(function() {context.trigger('update-requests');}, 5000);
+                    setTimeout(function() {context.trigger('update-requests');}, 30000);
                 });
         });
 
