@@ -18,6 +18,10 @@
 
 
 
+        this.bind('flash', function(e, message) {
+            $('#flashMsg').html(message);
+            $('#flash').fadeIn('slow').delay(5000).fadeOut('slow');
+        });
 
 
 // based on the `#each` helper, requires jQuery (for jQuery.extend)
@@ -74,17 +78,6 @@ Handlebars.registerHelper('attachNames', function(items) {
 });
 
 
-        function newAlert() {
-            var oldTitle = document.title;
-            var msg = "Новый заказ!";
-            var timeoutId = setInterval(function() {
-                document.title = document.title == msg ? ' ' : msg;
-            }, 2000);
-            window.onmousemove = function() {
-                document.title = oldTitle;
-                window.onmousemove = null;
-            };
-        }
 
         var current_user = false;
 
@@ -99,7 +92,6 @@ Handlebars.registerHelper('attachNames', function(items) {
 		if (data == "fail") {
 		    login.clear("user");
                 }
-	    });
             if (login.get('user')) {
                 $('#menu_login').hide();
                 $('#menu_user').show();
@@ -110,6 +102,8 @@ Handlebars.registerHelper('attachNames', function(items) {
                 $('#menu_user').hide();
                 $('.admin-only').hide();
             }
+
+	    });
 
         };
 
@@ -140,30 +134,30 @@ Handlebars.registerHelper('attachNames', function(items) {
                             cat = categories[i];
                         }
                     }
-                    this.load('/json/tagscategory?category=' + category, {"json":true})
+                    this.load('/json/tagscategory?category=' + encodeURIComponent(category), {"json":true})
                         .then(function(tags) {
-                            context.render('/templates/category_content.mustache',
-                                           {"catTitle":cat.catTitle,
-                                            "tags":tags,
-                                            "catId":cat.catId,
-                                            "catContent":cat.catContent,
-                                            "catName":category})
-                                .replace('#premain');
+	                    this.load(link + '?category=' + encodeURIComponent(category), {"json":true})
+		                .then(function(items) {
+		                    $("#main").fadeIn('fast', function() {
+                                        context.render('templates/category.mustache',
+                                                       {"items":items,
+                                                        "tags":tags,
+                                                        "catTitle":cat.catTitle,
+                                                        "tags":tags,
+                                                        "catId":cat.catId,
+                                                        "catContent":cat.catContent,
+                                                        "catName":category})
+			                    .replace('#main')
+			                    .then(function () {
+				                $("#main").fadeIn('fast');
+	                                        $('.nav li').removeClass('active');
+				                $('#cat_' + category).addClass('active');
+                                                checkLoggedIn();
+	                                    });
+		                    });
+	                        });
                         });
 
-	            this.load(link + '?category=' + category, {"json":true})
-		        .then(function(items) {
-		            $("#main").fadeIn('fast', function() {
-                                context.renderEach('templates/item.mustache',items)
-			            .replace('#main')
-			            .then(function () {
-				        $("#main").fadeIn('fast');
-	                                $('.nav li').removeClass('active');
-				        $('#cat_' + category).addClass('active');
-                                        checkLoggedIn();
-	                            });
-		            });
-	                });
 	        });
         });
 
@@ -212,7 +206,7 @@ Handlebars.registerHelper('attachNames', function(items) {
 	this.around(function(callback) {
 	    var context = this;
             app.clearTemplateCache();
-	    $(".alert").alert('close');
+//	    $(".alert").alert('close');
 	    $('.telephone').text("27-87-28");
 	    $('.nav li').removeClass('active');
 	    this.categories = cache.get("categories");
@@ -225,9 +219,8 @@ Handlebars.registerHelper('attachNames', function(items) {
 	    var id = this.params['id'];
             var context = this;
             $('#premain').empty();
+
             this.contentId = id;
-            this.render('templates/edit_content.mustache',{'contentId':id})
-		.replace('#main');
             this.load("/json/rawcontent?id=" + id, {"json":true})
 		.then(function(items) {
 		    $("#main").fadeOut('fast', function() {
@@ -239,8 +232,8 @@ Handlebars.registerHelper('attachNames', function(items) {
         });
 	this.post("#/editpage/:id", function() {
 	    $.post("/json/editcontent", this.params, function(response) {
-//             context.next(JSON.parse(response));
-           });
+                //             context.next(JSON.parse(response));
+            });
 	    this.redirect("#/");
 	});
 
@@ -268,6 +261,7 @@ Handlebars.registerHelper('attachNames', function(items) {
                 //history.back();
                 //context.next(JSON.parse(response));
             });
+            this.redirect("#/edit/" + id);
 	});
 
 	this.get("#/deletereq/:id", function() {
@@ -305,11 +299,22 @@ Handlebars.registerHelper('attachNames', function(items) {
 		});
         });
 
-	this.post("#/edit", function() {
+        this.post("/json/edit", function(){
+            var context = this;
 	    $.post("/json/edit", this.params, function(response) {
-//             context.next(JSON.parse(response));
-           });
-	    this.redirect("#/");
+                context.trigger('flash', "Запись обновлена...");
+                app.runRoute("get", "#/edit/" + context.params['id']);
+                //             context.next(JSON.parse(response));
+            });
+        });
+	this.post("#/edit", function() {
+            var context = this;
+	    $.post("/json/edit", this.params, function(response) {
+                context.trigger('flash', "Запись обновлена...");
+                app.runRoute("get", "#/edit/" + context.params['id']);
+                //             context.next(JSON.parse(response));
+            });
+//	    this.redirect("#/");
 	});
 
         this.get("#/edit_category/:id", function() {
@@ -388,6 +393,58 @@ Handlebars.registerHelper('attachNames', function(items) {
 //////////////////////////////////
 // STATIC
 /////////////////////////////////
+	this.get("#/discount", function() {
+            $('#premain').empty();
+	    $('#menu_discount').addClass('active');
+            this.render('templates/main.mustache', {"contentId":"discount"})
+                .replace("#main");
+	    this.load("/json/content?id=discount", {"json":true})
+		.render('templates/main.mustache')
+		.replace('#main')
+		.then(function () {
+                    checkLoggedIn();
+	        });
+	});
+
+	this.get("#/deliver", function() {
+            $('#premain').empty();
+	    $('#menu_deliver').addClass('active');
+            this.render('templates/main.mustache', {"contentId":"deliver"})
+                .replace("#main");
+	    this.load("/json/content?id=deliver", {"json":true})
+		.render('templates/main.mustache')
+		.replace('#main')
+		.then(function () {
+                    checkLoggedIn();
+	        });
+	});
+
+	this.get("#/contacts", function() {
+            $('#premain').empty();
+	    $('#menu_contacts').addClass('active');
+            this.render('templates/main.mustache', {"contentId":"contacts"})
+                .replace("#main");
+	    this.load("/json/content?id=contacts", {"json":true})
+		.render('templates/main.mustache')
+		.replace('#main')
+		.then(function () {
+                    checkLoggedIn();
+	        });
+	});
+
+	this.get("#/address", function() {
+            $('#premain').empty();
+	    $('#menu_address').addClass('active');
+            this.render('templates/main.mustache', {"contentId":"address"})
+                .replace("#main");
+	    this.load("/json/content?id=address", {"json":true})
+		.render('templates/main.mustache')
+		.replace('#main')
+		.then(function () {
+                    checkLoggedIn();
+	        });
+        });
+
 	this.get("#/page/:page", function() {
             var page = this.params['page'];
             $('#premain').empty();
@@ -397,7 +454,11 @@ Handlebars.registerHelper('attachNames', function(items) {
                     if (items == null)
                     {
                         this.render('templates/main.mustache', {"contentId":page})
-                            .replace("#main");
+                            .replace("#main")
+		            .then(function () {
+                                checkLoggedIn();
+	                    });
+
                     } else {
 		        this.render('templates/main.mustache',items)
 		            .replace('#main')
@@ -406,22 +467,44 @@ Handlebars.registerHelper('attachNames', function(items) {
 	                    });
                     }
                 });
+
         });
 
         this.get("#/additem", function() {
             var context = this;
+
             $('#premain').empty();
+            this.trigger('update-catregories');
 	    this.render('templates/additem.template')
 		.replace('#main');
+            // FIXME: update trigger before render
         });
 
-        this.post("#/additem", function() {
+        this.post("/json/additem", function(){
             var context = this;
             var category = this.params.category;
-            $.post('/json/additem', this.params, function(data) {
-                // FIXME: добавить уведомление
-                alert(data);
-                context.redirect("#/category/" + category);
+
+            $("#addform").ajaxSubmit({
+                url: '/json/additem',
+                success: function() {
+                    context.trigger('flash', "Запись добавлена.");
+                    context.redirect("#/category/" + category);
+                    app.runRoute("get", "#/category/" + category);
+                }
+            });
+        });
+
+        this.post("#/additem", function(){
+            var context = this;
+            var category = this.params.category;
+
+            $("#addform").ajaxSubmit({
+                url: '/json/additem',
+                success: function() {
+                    context.trigger('flash', "Запись добавлена.");
+                    context.redirect("#/category/" + category);
+                    app.runRoute("get", "#/category/" + category);
+                }
             });
         });
 
@@ -586,7 +669,7 @@ Handlebars.registerHelper('attachNames', function(items) {
             this.contentId = "main";
             this.render('templates/main.mustache', {"contentId":"main"})
                 .replace("#main");
-	    this.load("/json/content?id=main", {"json":true,})
+	    this.load("/json/content?id=main", {"json":true})
 		.render('templates/main.mustache')
 		.replace('#main')
 		.then(function () {
@@ -622,17 +705,19 @@ Handlebars.registerHelper('attachNames', function(items) {
 
         this.bind('update-requests', function() {
             var context = this;
+            if (login.get('user')) {
             // Display categories
-            this.load('/json/newrequests', {"json":true})
-                .then(function(items) {
-                    var count = items.length;
-                    if (context.oldCount != count && count != 0) {
-                        $("#newRequestsAlert").show();
-                    }
-                    context.oldCount = count;
-                    $("#requestNumber").text(count);
-                    setTimeout(function() {context.trigger('update-requests');}, 30000);
-                });
+                this.load('/json/newrequests', {"json":true})
+                    .then(function(items) {
+                        var count = items.length;
+                        if (context.oldCount != count && count != 0) {
+                            $("#newRequestsAlert").show();
+                        }
+                        context.oldCount = count;
+                        $("#requestNumber").text(count);
+                        setTimeout(function() {context.trigger('update-requests');}, 50000);
+                    });
+            }
         });
 
 
